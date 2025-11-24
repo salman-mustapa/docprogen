@@ -1,7 +1,24 @@
 // assets/api.js
 
+// Password hashing utilities
+const hashPassword = async (password) => {
+    // Simple hash implementation for client-side
+    // In production, use a proper server-side hashing
+    const encoder = new TextEncoder();
+    const data = encoder.encode(password);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    return hashHex;
+};
+
+const verifyPassword = async (password, storedHash) => {
+    const inputHash = await hashPassword(password);
+    return inputHash === storedHash;
+};
+
 // HARDCODE URL BARU ANDA DISINI UNTUK MEMASTIKAN TIDAK ADA CACHE LAMA
-const HARDCODED_URL = 'https://script.google.com/macros/s/AKfycbyAlklm1Eg2JIUaagXkEJhv5TSTxX0gznxqt_ue-kZzMy3E0pFGCsBtzTuAxP9XfqFI/exec';
+const HARDCODED_URL = 'https://script.google.com/macros/s/AKfycbzvIz9UGVr8uYh8ohcF3LBtMrMqZX3AkBZDwAVzYgffXQDosJcnZab5I_VxCF5wCDNBig/exec';
 
 // Get API base URL (Prioritize hardcoded, then settings, then default)
 const API_BASE_URL = HARDCODED_URL || localStorage.getItem('api_base_url');
@@ -88,12 +105,25 @@ const api = {
         return response.client;
     },
     
+    async getClientProjects(clientId) {
+        const response = await apiRequest(`/client_projects?client_id=${clientId}`);
+        return response.projects || [];
+    },
+    
     async createClient(clientData) {
         const response = await apiRequest('/client_create', {
             method: 'POST',
             body: JSON.stringify(clientData),
         });
         return response.client;
+    },
+    
+    async createClientWithProject(clientData, projectData) {
+        const response = await apiRequest('/client_create_with_project', {
+            method: 'POST',
+            body: JSON.stringify({ client: clientData, project: projectData }),
+        });
+        return response;
     },
     
     async updateClient(clientId, clientData) {
@@ -117,10 +147,6 @@ const api = {
         return response.projects || [];
     },
     
-    // async getProject(projectId) {
-    //     const response = await apiRequest(`/project?project_id=${projectId}`);
-    //     return response.project;
-    // },
     async getProject(projectId) {
         try {
             const response = await apiRequest(`/project?project_id=${projectId}`);
@@ -180,5 +206,31 @@ const api = {
             body: JSON.stringify(settingsData),
         });
         return response.settings;
+    },
+    
+    async setupFirstTime(setupData) {
+        const response = await apiRequest('/setup', {
+            method: 'POST',
+            body: JSON.stringify(setupData),
+        });
+        return response;
+    },
+    
+    async checkSetupStatus() {
+        try {
+            const response = await apiRequest('/check_setup');
+            return response.setup_complete;
+        } catch (error) {
+            console.error('Error checking setup status:', error);
+            // If endpoint not found, assume setup is needed
+            if (error.message.includes('Endpoint not found')) {
+                return false;
+            }
+            throw error;
+        }
     }
 };
+
+// Export hashing utilities
+window.hashPassword = hashPassword;
+window.verifyPassword = verifyPassword;

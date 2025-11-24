@@ -356,6 +356,7 @@
         clientFilter.addEventListener('change', handleFilter);
 
         // Functions
+        // Update bagian loadData di projects.html
         async function loadData() {
             try {
                 projects = await api.getProjects();
@@ -368,7 +369,18 @@
                 handleFilter();
             } catch (error) {
                 console.error('Error loading data:', error);
-                showNotification('Failed to load data', 'error');
+                handleApiError(error, 'Failed to load data');
+                
+                // Show error state in grid
+                projectsContainer.innerHTML = `
+                    <div class="col-span-full text-center py-8 text-red-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto mb-4 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <p class="text-lg font-medium">Failed to load projects</p>
+                        <p class="text-sm">Please try refreshing the page</p>
+                    </div>
+                `;
             }
         }
 
@@ -490,7 +502,9 @@
 
         function openProjectModal(projectId = null) {
             const project = projectId ? projects.find(p => p.project_id === projectId) : null;
-            
+            const urlParams = new URLSearchParams(window.location.search);
+            const preselectedClientId = urlParams.get('client');
+
             if (project) {
                 modalTitle.textContent = 'Edit Project';
                 document.getElementById('project-title').value = project.project_title;
@@ -513,6 +527,10 @@
                 modalTitle.textContent = 'Add New Project';
                 projectForm.reset();
                 document.getElementById('project-id').value = '';
+                if (preselectedClientId) {
+                    document.getElementById('client-id').value = preselectedClientId;
+                }
+
                 currentEditId = null;
             }
             

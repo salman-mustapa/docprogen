@@ -788,42 +788,54 @@
       });
 
       // Functions
+      // Update bagian loadProject di project-detail.html
       async function loadProject() {
-        try {
-          if (!projectId) throw new Error("Project ID is required");
+          try {
+              if (!projectId) throw new Error("Project ID is required");
 
-          // API might return either { ok: true, project: {...} } or the project object directly
-          const res = await api.getProject(projectId);
-          project = res && res.project ? res.project : res;
+              // API might return either { ok: true, project: {...} } or project object directly
+              const res = await api.getProject(projectId);
+              project = res && res.project ? res.project : res;
 
-          if (!project || !project.project_id)
-            throw new Error("Project not found");
+              if (!project || !project.project_id)
+                  throw new Error("Project not found");
 
-          // client may be returned similarly
-          let clientRes = project.client_id
-            ? await api.getClient(project.client_id)
-            : null;
-          client = clientRes && clientRes.client ? clientRes.client : clientRes;
+              // client may be returned similarly
+              let clientRes = project.client_id
+                  ? await api.getClient(project.client_id)
+                  : null;
+              client = clientRes && clientRes.client ? clientRes.client : clientRes;
 
-          // settings
-          const settingsRes = await api.getSettings();
-          settings =
-            settingsRes && settingsRes.settings
-              ? settingsRes.settings
-              : settingsRes;
+              // settings
+              const settingsRes = await api.getSettings();
+              settings =
+                  settingsRes && settingsRes.settings
+                      ? settingsRes.settings
+                      : settingsRes;
 
-          // ensure fields normalized
-          project.project_features = project.project_features || "";
-          project.deliverables = project.deliverables || "";
+              // ensure fields normalized
+              project.project_features = project.project_features || "";
+              project.deliverables = project.deliverables || "";
 
-          renderProject();
-        } catch (error) {
-          console.error("Error loading project:", error);
-          showNotification(
-            "Failed to load project: " + (error.message || error.toString()),
-            "error"
-          );
-        }
+              renderProject();
+          } catch (error) {
+              console.error('Error loading project:', error);
+              handleApiError(error, 'Failed to load project');
+              
+              // Show error state
+              document.getElementById('project-container').innerHTML = `
+                  <div class="bg-white/70 backdrop-blur-md rounded-xl shadow-md p-8 border border-white/50 text-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto mb-4 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      <h2 class="text-xl font-semibold text-gray-800 mb-2">Error Loading Project</h2>
+                      <p class="text-gray-600 mb-4">${error.message || 'An unknown error occurred'}</p>
+                      <a href="projects.html" class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
+                          Back to Projects
+                      </a>
+                  </div>
+              `;
+          }
       }
 
       function renderProject() {

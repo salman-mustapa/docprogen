@@ -294,6 +294,7 @@
         searchInput.addEventListener('input', handleSearch);
 
         // Functions
+        // Update bagian loadClients di clients.html
         async function loadClients() {
             try {
                 clients = await api.getClients();
@@ -301,10 +302,24 @@
                 renderClients();
             } catch (error) {
                 console.error('Error loading clients:', error);
-                showNotification('Failed to load clients', 'error');
+                handleApiError(error, 'Failed to load clients');
+                
+                // Show error state in table
+                clientsTbody.innerHTML = `
+                    <tr>
+                        <td colSpan="5" class="px-6 py-8 text-center text-red-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto mb-4 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <p class="text-lg font-medium">Failed to load clients</p>
+                            <p class="text-sm">Please try refreshing the page</p>
+                        </td>
+                    </tr>
+                `;
             }
         }
 
+        // Ganti bagian renderClients di clients.html
         function renderClients() {
             if (filteredClients.length === 0) {
                 clientsTbody.innerHTML = `
@@ -323,7 +338,11 @@
                 row.className = 'hover:bg-gray-50';
                 row.innerHTML = `
                     <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm font-medium text-gray-900">${client.name}</div>
+                        <div class="text-sm font-medium text-gray-900">
+                            <a href="client-detail.html?client_id=${client.client_id}" class="text-indigo-600 hover:text-indigo-900">
+                                ${client.name}
+                            </a>
+                        </div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="text-sm text-gray-500">${client.company || '-'}</div>
@@ -335,6 +354,7 @@
                         <div class="text-sm text-gray-500">${client.phone || '-'}</div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <a href="client-detail.html?client_id=${client.client_id}" class="text-indigo-600 hover:text-indigo-900 mr-3">View</a>
                         <button class="text-indigo-600 hover:text-indigo-900 mr-3" onclick="editClient('${client.client_id}')">Edit</button>
                         <button class="text-red-600 hover:text-red-900" onclick="deleteClient('${client.client_id}')">Delete</button>
                     </td>

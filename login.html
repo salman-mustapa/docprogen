@@ -72,10 +72,25 @@
     <script src="assets/main.js"></script>
     <script src="assets/api.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
             // Check if already logged in
             if (checkAuth()) {
                 window.location.href = 'index.html';
+                return;
+            }
+
+            // Check if first-time setup is needed
+            // Update bagian check setup status di login.html
+            try {
+                const setupComplete = await api.checkSetupStatus();
+                if (!setupComplete) {
+                    window.location.href = 'setup.html';
+                    return;
+                }
+            } catch (error) {
+                console.error('Error checking setup status:', error);
+                // If check fails, assume setup is needed
+                window.location.href = 'setup.html';
                 return;
             }
 
@@ -104,6 +119,7 @@
             const loginText = document.getElementById('login-text');
             const loginSpinner = document.getElementById('login-spinner');
 
+            // Update bagian handle login di login.html
             loginForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 
@@ -122,7 +138,10 @@
                     // Get settings to verify password
                     const settings = await api.getSettings();
                     
-                    if (password === settings.admin_password) {
+                    // Verify hashed password
+                    const isValid = await verifyPassword(password, settings.admin_password);
+                    
+                    if (isValid) {
                         // Store session
                         sessionStorage.setItem('session_key', 'authenticated');
                         showNotification('Login successful', 'success');
@@ -139,7 +158,16 @@
                     }
                 } catch (error) {
                     console.error('Login error:', error);
-                    showNotification('Login failed. Please try again.', 'error');
+                    
+                    // Handle specific error cases
+                    if (error.message.includes('Connection failed')) {
+                        showNotification('Cannot connect to server. Please check your internet connection.', 'error');
+                    } else if (error.message.includes('Settings not found')) {
+                        showNotification('System not properly configured. Please contact administrator.', 'error');
+                    } else {
+                        showNotification('Login failed. Please try again.', 'error');
+                    }
+                    
                     loginBtn.disabled = false;
                     loginText.textContent = 'Login';
                     loginSpinner.classList.add('hidden');

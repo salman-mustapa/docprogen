@@ -1,3 +1,5 @@
+// assets/main.js
+
 // Main JavaScript file for common utilities
 
 /**
@@ -18,34 +20,38 @@ function showNotification(message, type = 'info') {
     if (!container) return;
     
     const notification = document.createElement('div');
-    notification.className = `notification notification-${type}`;
+    notification.className = `notification notification-${type} p-4 rounded-lg shadow-lg mb-2 flex items-center justify-between`;
     
-    // Add icon based on type
-    let icon = '';
+    // Add color based on type
+    let bgColor = 'bg-blue-100 text-blue-800';
+    let icon = '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>';
+    
     switch (type) {
         case 'success':
+            bgColor = 'bg-green-100 text-green-800';
             icon = '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>';
             break;
         case 'error':
+            bgColor = 'bg-red-100 text-red-800';
             icon = '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>';
             break;
         case 'warning':
+            bgColor = 'bg-yellow-100 text-yellow-800';
             icon = '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>';
             break;
-        default:
-            icon = '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>';
     }
     
+    notification.className += ` ${bgColor}`;
     notification.innerHTML = `
         <div class="flex items-center">
             ${icon}
             <span>${message}</span>
-            <button class="ml-auto text-current opacity-70 hover:opacity-100" onclick="this.parentElement.parentElement.remove()">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
         </div>
+        <button class="ml-4 text-current opacity-70 hover:opacity-100" onclick="this.parentElement.remove()">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
     `;
     
     container.appendChild(notification);
@@ -60,32 +66,22 @@ function showNotification(message, type = 'info') {
 
 /**
  * Handle API errors consistently
- * @param {Response} response - The fetch response object
+ * @param {Error} error - The error object
  * @param {string} defaultMessage - Default error message
  */
-function handleApiError(response, defaultMessage = 'An error occurred') {
-    if (!response.ok) {
-        console.error('API error', response, response.statusText);
-        
-        // Try to get error message from response
-        response.text().then(text => {
-            let errorMessage = defaultMessage;
-            try {
-                const errorData = JSON.parse(text);
-                errorMessage = errorData.message || errorData.error || defaultMessage;
-            } catch (e) {
-                // If not JSON, use the text directly or default
-                errorMessage = text || defaultMessage;
-            }
-            
-            showNotification(errorMessage, 'error');
-        }).catch(() => {
-            showNotification(defaultMessage, 'error');
-        });
-        
-        return true;
+function handleApiError(error, defaultMessage = 'An error occurred') {
+    console.error('API Error:', error);
+    
+    // Handle specific error cases
+    if (error.message.includes('Connection failed')) {
+        showNotification('Cannot connect to server. Please check your internet connection.', 'error');
+    } else if (error.message.includes('Endpoint not found')) {
+        showNotification('API endpoint not found. Please check your configuration.', 'error');
+    } else if (error.message.includes('Internal server error')) {
+        showNotification('Server error. Please try again later.', 'error');
+    } else {
+        showNotification(defaultMessage + ': ' + error.message, 'error');
     }
-    return false;
 }
 
 /**
@@ -141,7 +137,7 @@ function debounce(func, wait) {
 
 /**
  * Generate a random string
- * @param {number} length - Length of the string
+ * @param {number} length - Length of string
  * @returns {string} Random string
  */
 function generateRandomString(length = 16) {
@@ -200,5 +196,66 @@ function initThemeToggle() {
     }
 }
 
-// Initialize theme toggle on DOM content loaded
-document.addEventListener('DOMContentLoaded', initThemeToggle);
+/**
+ * Add animation to elements
+ */
+function initAnimations() {
+    // Add fade-in animation to cards
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate-fade-in');
+            }
+        });
+    });
+
+    document.querySelectorAll('.card').forEach(card => {
+        observer.observe(card);
+    });
+}
+
+/**
+ * Initialize mobile menu
+ */
+function initMobileMenu() {
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    if (mobileMenuBtn && mobileMenu) {
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    }
+}
+
+/**
+ * Check for URL parameters and handle actions
+ */
+function handleUrlParams() {
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    // Handle edit parameter
+    if (urlParams.get('edit')) {
+        // Trigger edit mode
+        const editId = urlParams.get('edit');
+        // Implementation depends on page
+    }
+    
+    // Handle client parameter for new project
+    if (urlParams.get('client')) {
+        const clientId = urlParams.get('client');
+        // Pre-fill client in project form
+        const clientSelect = document.getElementById('client-id');
+        if (clientSelect) {
+            clientSelect.value = clientId;
+        }
+    }
+}
+
+// Initialize all functions on DOM content loaded
+document.addEventListener('DOMContentLoaded', () => {
+    initThemeToggle();
+    initAnimations();
+    initMobileMenu();
+    handleUrlParams();
+});
