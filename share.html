@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project Share - Freelance Project Manager</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="assets/styles.css" />
+  </head>
+  <body
+    class="font-quicksand bg-gradient-to-br from-indigo-50 via-white to-purple-50 min-h-screen"
+  >
+    <!-- Header -->
+    <header class="bg-white/70 backdrop-blur-md shadow-sm">
+      <div class="container mx-auto px-4 py-4">
+        <div class="flex items-center justify-between">
+          <h1 class="text-xl font-bold text-indigo-700">Project Share</h1>
+          <a
+            href="showcase.html"
+            class="text-indigo-600 hover:text-indigo-800 font-medium"
+          >
+            Back to Showcase
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="px-4 py-8 min-h-screen">
+      <div class="container mx-auto">
+        <div id="project-container" class="max-w-4xl mx-auto">
+          <div class="flex justify-center py-8">
+            <div
+              class="animate-spin rounded-full h-10 w-10 border-b-2 border-indigo-500"
+            ></div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer
+      class="bg-white/70 backdrop-blur-md mt-16 py-8 border-t border-gray-200"
+    >
+      <div class="container mx-auto px-4 text-center">
+        <p class="text-gray-600">
+          © 2023 Freelance Project Manager. All rights reserved.
+        </p>
+      </div>
+    </footer>
+
+    <!-- Notification Container -->
+    <div
+      id="notification-container"
+      class="fixed top-4 right-4 z-50 space-y-2"
+    ></div>
+
+    <script src="assets/main.js"></script>
+    <script src="assets/api.js"></script>
+    <script src="assets/templates.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script>
+      // Global variables
+      let project = null;
+      let client = null;
+      let settings = null;
+      const projectId = new URLSearchParams(window.location.search).get(
+        "project_id"
+      );
+      const token = new URLSearchParams(window.location.search).get("token");
+
+      // Functions
+      async function loadSharedProject() {
+        try {
+          if (!projectId || !token) {
+            throw new Error("Missing project ID or token");
+          }
+
+          // Load project data
+          project = await api.getProject(projectId);
+
+          // Validate project data
+          if (!project) {
+            throw new Error("Project not found");
+          }
+
+          // Validate token
+          if (project.public_token !== token) {
+            throw new Error("Invalid token");
+          }
+
+          // Load client data
+          if (project.client_id) {
+            client = await api.getClient(project.client_id);
+          }
+
+          // Load settings
+          settings = await api.getSettings();
+
+          // Render project
+          renderProject();
+        } catch (error) {
+          console.error("Error loading shared project:", error);
+
+          // Show error message
+          document.getElementById("project-container").innerHTML = `
+                    <div class="bg-white/70 backdrop-blur-md rounded-xl shadow-md p-8 border border-white/50 text-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-red-500 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <h2 class="text-xl font-semibold text-gray-800 mb-2">Project Not Found</h2>
+                        <p class="text-gray-600 mb-4">${
+                          error.message ||
+                          "The project you are looking for does not exist or you do not have permission to view it."
+                        }</p>
+                        <a href="showcase.html" class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
+                            View Showcase
+                        </a>
+                    </div>
+                `;
+        }
+      }
+
+      function renderProject() {
+        const projectContainer = document.getElementById("project-container");
+
+        // Get first screenshot if available
+        let thumbnailUrl = "";
+        if (project.screenshots_json) {
+          try {
+            const screenshots = JSON.parse(project.screenshots_json);
+            if (screenshots && screenshots.length > 0) {
+              thumbnailUrl = screenshots[0];
+            }
+          } catch (e) {
+            console.error("Error parsing screenshots JSON:", e);
+          }
+        }
+
+        // Parse features list
+        let featuresList = [];
+        if (project.project_features) {
+          featuresList = project.project_features
+            .split("\n")
+            .filter((f) => f.trim());
+        }
+
+        projectContainer.innerHTML = `
+                <div class="bg-white/70 backdrop-blur-md rounded-xl shadow-md overflow-hidden border border-white/50">
+                    <div class="h-64 md:h-96 relative overflow-hidden">
+                        ${
+                          thumbnailUrl
+                            ? `<img src="${thumbnailUrl}" alt="${project.project_title}" class="w-full h-full object-cover">`
+                            : `<div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-indigo-100 to-purple-100">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-indigo-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                                </svg>
+                            </div>`
+                        }
+                        <div class="absolute top-4 right-4">
+                            <span class="px-3 py-1 text-sm rounded-full ${getStatusColor(
+                              project.status
+                            )}">${project.status}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6 md:p-8">
+                        <div class="mb-6">
+                            <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-2">${
+                              project.project_title
+                            }</h1>
+                            <p class="text-gray-600">Client: ${
+                              client ? client.name : "Unknown"
+                            }</p>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <h2 class="text-lg font-semibold text-gray-800 mb-2">Project Description</h2>
+                            <p class="text-gray-600">${
+                              project.long_description ||
+                              project.short_description ||
+                              "No description available"
+                            }</p>
+                        </div>
+                        
+                        ${
+                          featuresList.length > 0
+                            ? `
+                            <div class="mb-6">
+                                <h2 class="text-lg font-semibold text-gray-800 mb-2">Key Features</h2>
+                                <ul class="text-gray-600 space-y-2">
+                                    ${featuresList
+                                      .map(
+                                        (feature) =>
+                                          `<li class="flex items-start"><span class="text-indigo-500 mr-2">•</span>${feature}</li>`
+                                      )
+                                      .join("")}
+                                </ul>
+                            </div>
+                        `
+                            : ""
+                        }
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                            ${
+                              project.budget
+                                ? `
+                                <div>
+                                    <h3 class="text-sm font-medium text-gray-500">Budget</h3>
+                                    <p class="text-lg font-semibold text-gray-800">${formatCurrency(
+                                      project.budget
+                                    )}</p>
+                                </div>
+                            `
+                                : ""
+                            }
+                            ${
+                              project.start_date
+                                ? `
+                                <div>
+                                    <h3 class="text-sm font-medium text-gray-500">Start Date</h3>
+                                    <p class="text-lg font-semibold text-gray-800">${formatDate(
+                                      project.start_date
+                                    )}</p>
+                                </div>
+                            `
+                                : ""
+                            }
+                            ${
+                              project.end_date
+                                ? `
+                                <div>
+                                    <h3 class="text-sm font-medium text-gray-500">End Date</h3>
+                                    <p class="text-lg font-semibold text-gray-800">${formatDate(
+                                      project.end_date
+                                    )}</p>
+                                </div>
+                            `
+                                : ""
+                            }
+                            ${
+                              project.payment_terms
+                                ? `
+                                <div>
+                                    <h3 class="text-sm font-medium text-gray-500">Payment Terms</h3>
+                                    <p class="text-lg font-semibold text-gray-800">${project.payment_terms}</p>
+                                </div>
+                            `
+                                : ""
+                            }
+                        </div>
+                        
+                        <div class="border-t pt-6">
+                            <h2 class="text-lg font-semibold text-gray-800 mb-4">Project Documents</h2>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <button class="document-btn text-left bg-gray-50 hover:bg-gray-100 p-3 rounded-lg transition-colors flex items-center justify-between" data-doc="proposal">
+                                    <span class="font-medium">Proposal</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    </svg>
+                                </button>
+                                <button class="document-btn text-left bg-gray-50 hover:bg-gray-100 p-3 rounded-lg transition-colors flex items-center justify-between" data-doc="rab">
+                                    <span class="font-medium">RAB</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    </svg>
+                                </button>
+                                <button class="document-btn text-left bg-gray-50 hover:bg-gray-100 p-3 rounded-lg transition-colors flex items-center justify-between" data-doc="invoice">
+                                    <span class="font-medium">Invoice</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    </svg>
+                                </button>
+                                <button class="document-btn text-left bg-gray-50 hover:bg-gray-100 p-3 rounded-lg transition-colors flex items-center justify-between" data-doc="cv-summary">
+                                    <span class="font-medium">CV Summary</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+        // Add event listeners to document buttons
+        document.querySelectorAll(".document-btn").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const docType = btn.getAttribute("data-doc");
+            generateDocument(docType);
+          });
+        });
+      }
+
+      function getStatusColor(status) {
+        switch (status) {
+          case "done":
+            return "bg-green-100 text-green-800";
+          case "in-progress":
+            return "bg-blue-100 text-blue-800";
+          case "planning":
+            return "bg-yellow-100 text-yellow-800";
+          case "cancelled":
+            return "bg-red-100 text-red-800";
+          default:
+            return "bg-gray-100 text-gray-800";
+        }
+      }
+
+      function formatCurrency(amount) {
+        const currency = settings.default_currency || "IDR";
+
+        return new Intl.NumberFormat("id-ID", {
+          style: "currency",
+          currency: currency,
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 0,
+        }).format(amount);
+      }
+
+      function formatDate(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleDateString("id-ID", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        });
+      }
+
+      function generateDocument(docType) {
+        if (!project || !settings) {
+          showNotification("Please wait for data to load", "warning");
+          return;
+        }
+
+        const templateFunc = getDocumentTemplate(docType);
+        if (!templateFunc) {
+          showNotification("Template not found", "error");
+          return;
+        }
+
+        // Prepare data
+        const data = {
+          client: client,
+          project: project,
+          settings: settings,
+        };
+
+        try {
+          const rendered = templateFunc(data);
+          showNotification("Generating PDF...", "info");
+
+          // 1. Buat Container "Overlay" (Layar Putih Penutup)
+          // Ini memastikan tidak ada gangguan visual dari background aplikasi
+          const container = document.createElement("div");
+          container.style.position = "absolute"; // Ubah ke absolute agar bisa di-scroll oleh html2pdf
+          container.style.top = "0";
+          container.style.left = "0";
+          container.style.width = "100%";
+          container.style.zIndex = "99999"; // Paling atas
+          container.style.backgroundColor = "#ffffff"; // Background putih mutlak
+
+          // 2. Buat Elemen Dokumen (Kertas A4)
+          const element = document.createElement("div");
+          element.innerHTML = rendered;
+          element.style.width = "210mm"; // Lebar A4
+          element.style.minHeight = "297mm"; // Tinggi minimal A4
+          element.style.margin = "0 auto"; // Tengah
+          element.style.backgroundColor = "#ffffff";
+          element.style.color = "#000000"; // Paksa text hitam
+
+          // Masukkan elemen ke container, lalu container ke body
+          container.appendChild(element);
+          document.body.appendChild(container);
+
+          // 3. Scroll ke atas agar html2canvas tidak bingung koordinatnya
+          window.scrollTo(0, 0);
+
+          const filename = `${(project.project_title || "document").replace(
+            /[^a-z0-9_\-]/gi,
+            "_"
+          )}_${docType}.pdf`;
+
+          const opt = {
+            margin: 0, // PENTING: Ubah jadi 0 karena template sudah punya padding sendiri
+            filename: filename,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { 
+                scale: 2, 
+                useCORS: true,
+                scrollY: 0,
+                windowWidth: document.documentElement.offsetWidth,
+            },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+          // 4. Beri jeda agar Tailwind render style, lalu convert
+          setTimeout(() => {
+            html2pdf()
+              .set(opt)
+              .from(element)
+              .save()
+              .then(() => {
+                // Hapus container setelah selesai
+                if (document.body.contains(container)) {
+                  document.body.removeChild(container);
+                }
+                showNotification(
+                  `${docType.toUpperCase()} document generated successfully`,
+                  "success"
+                );
+              })
+              .catch((error) => {
+                console.error("Error generating PDF:", error);
+                if (document.body.contains(container)) {
+                  document.body.removeChild(container);
+                }
+                showNotification("Failed to generate document", "error");
+              });
+          }, 1000); // Waktu 1 detik cukup untuk render visual
+        } catch (error) {
+          console.error("Template rendering error:", error);
+          showNotification("Error preparing document template", "error");
+        }
+      }
+      
+      function getDocumentTemplate(docType) {
+        // This will be defined in templates.js
+        if (
+          typeof documentTemplates !== "undefined" &&
+          documentTemplates[docType]
+        ) {
+          return documentTemplates[docType];
+        }
+        return null;
+      }
+
+      // Initialize
+      document.addEventListener("DOMContentLoaded", loadSharedProject);
+    </script>
+  </body>
+</html>

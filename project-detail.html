@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project Detail - Freelance Project Manager</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="assets/styles.css" />
+  </head>
+  <body
+    class="font-quicksand bg-gradient-to-br from-indigo-50 via-white to-purple-50 min-h-screen"
+  >
+    <!-- Navigation (Desktop) -->
+    <header
+      class="hidden md:block fixed top-0 left-0 right-0 z-50 bg-white/70 backdrop-blur-md shadow-sm"
+    >
+      <nav
+        class="container mx-auto px-4 py-3 flex justify-between items-center"
+      >
+        <div class="flex items-center space-x-6">
+          <h1 class="text-xl font-bold text-indigo-700">Project Manager</h1>
+          <ul class="flex space-x-6">
+            <li>
+              <a
+                href="index.html"
+                class="nav-link flex items-center space-x-1 text-gray-600 hover:text-indigo-700 transition-colors"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"
+                  />
+                </svg>
+                <span>Dashboard</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="clients.html"
+                class="nav-link flex items-center space-x-1 text-gray-600 hover:text-indigo-700 transition-colors"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"
+                  />
+                </svg>
+                <span>Clients</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="projects.html"
+                class="nav-link flex items-center space-x-1 text-gray-600 hover:text-indigo-700 transition-colors"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M6 6V5a3 3 0 013-3h2a3 3 0 013 3v1h2a2 2 0 012 2v3.57A22.952 22.952 0 0110 13a22.95 22.95 0 01-8-1.43V8a2 2 0 012-2h2zm2-1a1 1 0 011-1h2a1 1 0 011 1v1H8V5zm1 5a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1z"
+                    clip-rule="evenodd"
+                  />
+                  <path
+                    d="M2 13.692V16a2 2 0 002 2h12a2 2 0 002-2v-2.308A24.974 24.974 0 0110 15c-2.796 0-5.487-.46-8-1.308z"
+                  />
+                </svg>
+                <span>Projects</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="showcase.html"
+                class="nav-link flex items-center space-x-1 text-gray-600 hover:text-indigo-700 transition-colors"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+                <span>Showcase</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="profile.html"
+                class="nav-link flex items-center space-x-1 text-gray-600 hover:text-indigo-700 transition-colors"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+                <span>Profile</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <button
+          id="theme-toggle"
+          class="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5 text-gray-600"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"
+            />
+          </svg>
+        </button>
+      </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="pt-20 md:pt-16 pb-20 md:pb-10 px-4 min-h-screen">
+      <div class="container mx-auto">
+        <div
+          class="mb-6 flex flex-col md:flex-row md:items-center md:justify-between"
+        >
+          <div>
+            <div class="flex items-center space-x-2 mb-2">
+              <a
+                href="projects.html"
+                class="text-indigo-600 hover:text-indigo-800"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </a>
+              <span class="text-gray-500">/</span>
+              <span class="text-gray-500">Projects</span>
+              <span class="text-gray-500">/</span>
+              <span
+                id="project-title-breadcrumb"
+                class="text-gray-800 font-medium"
+                >Project Detail</span
+              >
+            </div>
+            <h1 id="project-title" class="text-2xl font-bold text-gray-800">
+              Loading...
+            </h1>
+            <p id="project-subtitle" class="text-gray-600">
+              Loading project details...
+            </p>
+          </div>
+          <div class="mt-4 md:mt-0 flex space-x-2">
+            <button
+              id="edit-project-btn"
+              class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 mr-2"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                />
+              </svg>
+              Edit Project
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- Project Information -->
+          <div class="lg:col-span-2 space-y-6">
+            <!-- Basic Information -->
+            <div
+              class="bg-white/70 backdrop-blur-md rounded-xl shadow-md p-6 border border-white/50"
+            >
+              <h2 class="text-lg font-semibold text-gray-800 mb-4">
+                Project Information
+              </h2>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <p class="text-sm text-gray-500">Project ID</p>
+                  <p id="project-id" class="font-medium text-gray-800">-</p>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-500">Status</p>
+                  <p id="project-status" class="font-medium text-gray-800">-</p>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-500">Client</p>
+                  <p id="project-client" class="font-medium text-gray-800">-</p>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-500">Budget</p>
+                  <p id="project-budget" class="font-medium text-gray-800">-</p>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-500">Start Date</p>
+                  <p id="project-start-date" class="font-medium text-gray-800">
+                    -
+                  </p>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-500">End Date</p>
+                  <p id="project-end-date" class="font-medium text-gray-800">
+                    -
+                  </p>
+                </div>
+              </div>
+              <div class="mt-4">
+                <p class="text-sm text-gray-500">Description</p>
+                <p id="project-description" class="text-gray-800 mt-1">-</p>
+              </div>
+            </div>
+
+            <!-- Project Details -->
+            <div
+              class="bg-white/70 backdrop-blur-md rounded-xl shadow-md p-6 border border-white/50"
+            >
+              <h2 class="text-lg font-semibold text-gray-800 mb-4">
+                Project Details
+              </h2>
+              <div class="space-y-4">
+                <div>
+                  <p class="text-sm text-gray-500">Deliverables</p>
+                  <p id="project-deliverables" class="text-gray-800 mt-1">-</p>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-500">Payment Terms</p>
+                  <p id="project-payment-terms" class="text-gray-800 mt-1">-</p>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-500">Features</p>
+                  <p id="project-features" class="text-gray-800 mt-1">-</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Screenshots -->
+            <div
+              id="screenshots-section"
+              class="bg-white/70 backdrop-blur-md rounded-xl shadow-md p-6 border border-white/50 hidden"
+            >
+              <h2 class="text-lg font-semibold text-gray-800 mb-4">
+                Screenshots
+              </h2>
+              <div
+                id="screenshots-container"
+                class="grid grid-cols-1 md:grid-cols-2 gap-4"
+              >
+                <!-- Screenshots will be added here -->
+              </div>
+            </div>
+
+            <!-- YouTube Video -->
+            <div
+              id="youtube-section"
+              class="bg-white/70 backdrop-blur-md rounded-xl shadow-md p-6 border border-white/50 hidden"
+            >
+              <h2 class="text-lg font-semibold text-gray-800 mb-4">
+                Project Video
+              </h2>
+              <div id="youtube-container" class="aspect-w-16 aspect-h-9">
+                <!-- YouTube embed will be added here -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Document Generation -->
+          <div class="space-y-6">
+            <div
+              class="bg-white/70 backdrop-blur-md rounded-xl shadow-md p-6 border border-white/50"
+            >
+              <h2 class="text-lg font-semibold text-gray-800 mb-4">
+                Document Generation
+              </h2>
+              <div class="space-y-3">
+                <button
+                  class="document-btn w-full text-left bg-gray-50 hover:bg-gray-100 p-3 rounded-lg transition-colors"
+                  data-doc="proposal"
+                >
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-5 w-5 text-indigo-600 mr-3"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                        />
+                      </svg>
+                      <span class="font-medium">Proposal</span>
+                    </div>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-5 w-5 text-gray-400"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                      />
+                    </svg>
+                  </div>
+                </button>
+                <button
+                  class="document-btn w-full text-left bg-gray-50 hover:bg-gray-100 p-3 rounded-lg transition-colors"
+                  data-doc="contract"
+                >
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-5 w-5 text-indigo-600 mr-3"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                        />
+                      </svg>
+                      <span class="font-medium">Contract</span>
+                    </div>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-5 w-5 text-gray-400"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                      />
+                    </svg>
+                  </div>
+                </button>
+                <button
+                  class="document-btn w-full text-left bg-gray-50 hover:bg-gray-100 p-3 rounded-lg transition-colors"
+                  data-doc="srs"
+                >
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-5 w-5 text-indigo-600 mr-3"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                        />
+                      </svg>
+                      <span class="font-medium">SRS</span>
+                    </div>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-5 w-5 text-gray-400"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                      />
+                    </svg>
+                  </div>
+                </button>
+                <button
+                  class="document-btn w-full text-left bg-gray-50 hover:bg-gray-100 p-3 rounded-lg transition-colors"
+                  data-doc="rab"
+                >
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-5 w-5 text-indigo-600 mr-3"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                        />
+                      </svg>
+                      <span class="font-medium">RAB</span>
+                    </div>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-5 w-5 text-gray-400"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                      />
+                    </svg>
+                  </div>
+                </button>
+                <button
+                  class="document-btn w-full text-left bg-gray-50 hover:bg-gray-100 p-3 rounded-lg transition-colors"
+                  data-doc="invoice"
+                >
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-5 w-5 text-indigo-600 mr-3"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                        />
+                      </svg>
+                      <span class="font-medium">Invoice</span>
+                    </div>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-5 w-5 text-gray-400"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                      />
+                    </svg>
+                  </div>
+                </button>
+                <button
+                  class="document-btn w-full text-left bg-gray-50 hover:bg-gray-100 p-3 rounded-lg transition-colors"
+                  data-doc="uat"
+                >
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-5 w-5 text-indigo-600 mr-3"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                        />
+                      </svg>
+                      <span class="font-medium">UAT</span>
+                    </div>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-5 w-5 text-gray-400"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                      />
+                    </svg>
+                  </div>
+                </button>
+                <button
+                  class="document-btn w-full text-left bg-gray-50 hover:bg-gray-100 p-3 rounded-lg transition-colors"
+                  data-doc="cv-summary"
+                >
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-5 w-5 text-indigo-600 mr-3"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                        />
+                      </svg>
+                      <span class="font-medium">CV Summary</span>
+                    </div>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-5 w-5 text-gray-400"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                      />
+                    </svg>
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            <!-- Project Links -->
+            <div
+              class="bg-white/70 backdrop-blur-md rounded-xl shadow-md p-6 border border-white/50"
+            >
+              <h2 class="text-lg font-semibold text-gray-800 mb-4">
+                Project Links
+              </h2>
+              <div class="space-y-3">
+                <div
+                  id="share-link-container"
+                  class="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                >
+                  <span class="text-sm text-gray-600">Share Link</span>
+                  <button
+                    id="copy-share-link"
+                    class="text-indigo-600 hover:text-indigo-800 text-sm font-medium"
+                  >
+                    Copy
+                  </button>
+                </div>
+                <div
+                  id="public-link-container"
+                  class="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                >
+                  <span class="text-sm text-gray-600">Public Link</span>
+                  <button
+                    id="copy-public-link"
+                    class="text-indigo-600 hover:text-indigo-800 text-sm font-medium"
+                  >
+                    Copy
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Mobile Navigation -->
+    <nav
+      class="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/70 backdrop-blur-md shadow-lg border-t border-gray-200"
+    >
+      <div class="flex justify-around items-center py-2">
+        <a
+          href="index.html"
+          class="flex flex-col items-center p-2 text-gray-600"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+            />
+          </svg>
+          <span class="text-xs mt-1">Dashboard</span>
+        </a>
+        <a
+          href="clients.html"
+          class="flex flex-col items-center p-2 text-gray-600"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+            />
+          </svg>
+          <span class="text-xs mt-1">Clients</span>
+        </a>
+        <a
+          href="projects.html"
+          class="flex flex-col items-center p-2 text-gray-600"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+            />
+          </svg>
+          <span class="text-xs mt-1">Projects</span>
+        </a>
+        <a
+          href="showcase.html"
+          class="flex flex-col items-center p-2 text-gray-600"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+            />
+          </svg>
+          <span class="text-xs mt-1">Showcase</span>
+        </a>
+        <a
+          href="profile.html"
+          class="flex flex-col items-center p-2 text-gray-600"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+            />
+          </svg>
+          <span class="text-xs mt-1">Profile</span>
+        </a>
+      </div>
+    </nav>
+
+    <!-- Notification Container -->
+    <div
+      id="notification-container"
+      class="fixed top-20 right-4 z-50 space-y-2"
+    ></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <script src="assets/main.js"></script>
+    <script src="assets/api.js"></script>
+    <script src="assets/templates.js"></script>
+    <script>
+      // Check authentication
+      if (!checkAuth()) {
+        window.location.href = "login.html";
+      }
+
+      // Global variables
+      let project = null;
+      let client = null;
+      let settings = null;
+      const projectId = new URLSearchParams(window.location.search).get(
+        "project_id"
+      );
+
+      // DOM elements
+      const editProjectBtn = document.getElementById("edit-project-btn");
+      const documentBtns = document.querySelectorAll(".document-btn");
+      const copyShareLinkBtn = document.getElementById("copy-share-link");
+      const copyPublicLinkBtn = document.getElementById("copy-public-link");
+
+      // Event listeners
+      editProjectBtn.addEventListener("click", () => {
+        window.location.href = `projects.html?edit=${projectId}`;
+      });
+
+      documentBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const docType = btn.getAttribute("data-doc");
+          generateDocument(docType);
+        });
+      });
+
+      copyShareLinkBtn.addEventListener("click", () => {
+        const shareUrl = `${window.location.origin}/share.html?project_id=${projectId}&token=${project.public_token}`;
+        copyToClipboard(shareUrl);
+        showNotification("Share link copied to clipboard", "success");
+      });
+
+      copyPublicLinkBtn.addEventListener("click", () => {
+        const publicUrl = `${window.location.origin}/share.html?project_id=${projectId}&token=${project.public_token}`;
+        copyToClipboard(publicUrl);
+        showNotification("Public link copied to clipboard", "success");
+      });
+
+      // Functions
+      async function loadProject() {
+        try {
+          if (!projectId) throw new Error("Project ID is required");
+
+          // API might return either { ok: true, project: {...} } or the project object directly
+          const res = await api.getProject(projectId);
+          project = res && res.project ? res.project : res;
+
+          if (!project || !project.project_id)
+            throw new Error("Project not found");
+
+          // client may be returned similarly
+          let clientRes = project.client_id
+            ? await api.getClient(project.client_id)
+            : null;
+          client = clientRes && clientRes.client ? clientRes.client : clientRes;
+
+          // settings
+          const settingsRes = await api.getSettings();
+          settings =
+            settingsRes && settingsRes.settings
+              ? settingsRes.settings
+              : settingsRes;
+
+          // ensure fields normalized
+          project.project_features = project.project_features || "";
+          project.deliverables = project.deliverables || "";
+
+          renderProject();
+        } catch (error) {
+          console.error("Error loading project:", error);
+          showNotification(
+            "Failed to load project: " + (error.message || error.toString()),
+            "error"
+          );
+        }
+      }
+
+      function renderProject() {
+        // Update breadcrumb and title
+        document.getElementById("project-title-breadcrumb").textContent =
+          project.project_title;
+        document.getElementById("project-title").textContent =
+          project.project_title;
+        document.getElementById("project-subtitle").textContent = client
+          ? client.name
+          : "Unknown client";
+
+        // Update project information
+        document.getElementById("project-id").textContent = project.project_id;
+        document.getElementById(
+          "project-status"
+        ).innerHTML = `<span class="px-2 py-1 text-xs rounded-full ${getStatusColor(
+          project.status
+        )}">${project.status}</span>`;
+        document.getElementById("project-client").textContent = client
+          ? client.name
+          : "Unknown client";
+        document.getElementById("project-budget").textContent = project.budget
+          ? formatCurrency(project.budget)
+          : "Not specified";
+        document.getElementById("project-start-date").textContent =
+          project.start_date || "Not specified";
+        document.getElementById("project-end-date").textContent =
+          project.end_date || "Not specified";
+        document.getElementById("project-description").textContent =
+          project.long_description ||
+          project.short_description ||
+          "No description";
+
+        // Update project details
+        document.getElementById("project-deliverables").textContent =
+          project.deliverables || "Not specified";
+        document.getElementById("project-payment-terms").textContent =
+          project.payment_terms || "Not specified";
+        document.getElementById("project-features").textContent =
+          project.project_features || "Not specified";
+
+        // Render screenshots if available
+        if (project.screenshots_json) {
+          try {
+            const screenshots = JSON.parse(project.screenshots_json);
+            if (screenshots && screenshots.length > 0) {
+              renderScreenshots(screenshots);
+            }
+          } catch (e) {
+            console.error("Error parsing screenshots JSON:", e);
+          }
+        }
+
+        // Render YouTube video if available
+        if (project.youtube_link) {
+          renderYouTubeVideo(project.youtube_link);
+        }
+      }
+
+      function renderScreenshots(screenshots) {
+        const screenshotsSection = document.getElementById(
+          "screenshots-section"
+        );
+        const screenshotsContainer = document.getElementById(
+          "screenshots-container"
+        );
+
+        screenshotsSection.classList.remove("hidden");
+        screenshotsContainer.innerHTML = "";
+
+        screenshots.forEach((screenshot) => {
+          const img = document.createElement("img");
+          img.src = screenshot;
+          img.alt = project.project_title;
+          img.className = "w-full h-48 object-cover rounded-lg";
+          screenshotsContainer.appendChild(img);
+        });
+      }
+
+      function renderYouTubeVideo(youtubeUrl) {
+        const youtubeSection = document.getElementById("youtube-section");
+        const youtubeContainer = document.getElementById("youtube-container");
+
+        youtubeSection.classList.remove("hidden");
+
+        // Extract video ID from YouTube URL
+        let videoId = "";
+        const match = youtubeUrl.match(
+          /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/
+        );
+        if (match) {
+          videoId = match[1];
+        }
+
+        if (videoId) {
+          youtubeContainer.innerHTML = `
+                <iframe
+                class="w-full h-64 rounded-lg"
+                src="https://www.youtube.com/embed/${videoId}"
+                title="${project.project_title}"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+                </iframe>
+                `;
+        }
+      }
+
+      function getStatusColor(status) {
+        switch (status) {
+          case "done":
+            return "bg-green-100 text-green-800";
+          case "in-progress":
+            return "bg-blue-100 text-blue-800";
+          case "planning":
+            return "bg-yellow-100 text-yellow-800";
+          case "cancelled":
+            return "bg-red-100 text-red-800";
+          default:
+            return "bg-gray-100 text-gray-800";
+        }
+      }
+
+      function formatCurrency(amount) {
+        const currency = settings.default_currency || "IDR";
+
+        return new Intl.NumberFormat("id-ID", {
+          style: "currency",
+          currency: currency,
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 0,
+        }).format(amount);
+      }
+
+      function copyToClipboard(text) {
+        const textarea = document.createElement("textarea");
+        textarea.value = text;
+        textarea.style.position = "fixed";
+        textarea.style.opacity = "0";
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textarea);
+      }
+
+      function generateDocument(docType) {
+        if (!project || !settings) {
+          showNotification("Please wait for data to load", "warning");
+          return;
+        }
+
+        const templateFunc = getDocumentTemplate(docType);
+        if (!templateFunc) {
+          showNotification("Template not found", "error");
+          return;
+        }
+
+        // Prepare data
+        const data = {
+          client: client,
+          project: project,
+          settings: settings,
+        };
+
+        try {
+          const rendered = templateFunc(data);
+          showNotification("Generating PDF...", "info");
+
+          // 1. Buat Container "Overlay" (Layar Putih Penutup)
+          // Ini memastikan tidak ada gangguan visual dari background aplikasi
+          const container = document.createElement("div");
+          container.style.position = "absolute"; // Ubah ke absolute agar bisa di-scroll oleh html2pdf
+          container.style.top = "0";
+          container.style.left = "0";
+          container.style.width = "100%";
+          container.style.zIndex = "99999"; // Paling atas
+          container.style.backgroundColor = "#ffffff"; // Background putih mutlak
+
+          // 2. Buat Elemen Dokumen (Kertas A4)
+          const element = document.createElement("div");
+          element.innerHTML = rendered;
+          element.style.width = "210mm"; // Lebar A4
+          element.style.minHeight = "297mm"; // Tinggi minimal A4
+          element.style.margin = "0 auto"; // Tengah
+          element.style.backgroundColor = "#ffffff";
+          element.style.color = "#000000"; // Paksa text hitam
+
+          // Masukkan elemen ke container, lalu container ke body
+          container.appendChild(element);
+          document.body.appendChild(container);
+
+          // 3. Scroll ke atas agar html2canvas tidak bingung koordinatnya
+          window.scrollTo(0, 0);
+
+          const filename = `${(project.project_title || "document").replace(
+            /[^a-z0-9_\-]/gi,
+            "_"
+          )}_${docType}.pdf`;
+
+          const opt = {
+            margin: 0, // PENTING: Ubah jadi 0 karena template sudah punya padding sendiri
+            filename: filename,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { 
+                scale: 2, 
+                useCORS: true,
+                scrollY: 0,
+                windowWidth: document.documentElement.offsetWidth,
+            },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+          // 4. Beri jeda agar Tailwind render style, lalu convert
+          setTimeout(() => {
+            html2pdf()
+              .set(opt)
+              .from(element)
+              .save()
+              .then(() => {
+                // Hapus container setelah selesai
+                if (document.body.contains(container)) {
+                  document.body.removeChild(container);
+                }
+                showNotification(
+                  `${docType.toUpperCase()} document generated successfully`,
+                  "success"
+                );
+              })
+              .catch((error) => {
+                console.error("Error generating PDF:", error);
+                if (document.body.contains(container)) {
+                  document.body.removeChild(container);
+                }
+                showNotification("Failed to generate document", "error");
+              });
+          }, 1000); // Waktu 1 detik cukup untuk render visual
+        } catch (error) {
+          console.error("Template rendering error:", error);
+          showNotification("Error preparing document template", "error");
+        }
+      }
+
+      function getDocumentTemplate(docType) {
+        // This will be defined in templates.js
+        if (
+          typeof documentTemplates !== "undefined" &&
+          documentTemplates[docType]
+        ) {
+          return documentTemplates[docType];
+        }
+        return null;
+      }
+
+      // Initialize
+      if (projectId) {
+        document.addEventListener("DOMContentLoaded", loadProject);
+      } else {
+        showNotification("Project ID not provided", "error");
+        window.location.href = "projects.html";
+      }
+    </script>
+  </body>
+</html>

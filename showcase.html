@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Showcase - Freelance Project Manager</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body class="font-quicksand bg-gradient-to-br from-indigo-50 via-white to-purple-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white/70 backdrop-blur-md shadow-sm">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <h1 class="text-xl font-bold text-indigo-700">Project Showcase</h1>
+                <a href="index.html" class="text-indigo-600 hover:text-indigo-800 font-medium">
+                    Admin Portal
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="px-4 py-8 min-h-screen">
+        <div class="container mx-auto">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Our Portfolio</h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                    Explore our completed projects and see how we've helped businesses achieve their goals
+                </p>
+            </div>
+
+            <!-- Projects Grid -->
+            <div id="projects-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="col-span-full flex justify-center py-8">
+                    <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-indigo-500"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white/70 backdrop-blur-md mt-16 py-8 border-t border-gray-200">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-gray-600">© 2023 Freelance Project Manager. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Consult Modal -->
+    <div id="consult-modal" class="fixed inset-0 z-50 overflow-y-auto hidden">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+            </div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <form id="consult-form">
+                    <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                        <div class="mb-4">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900">Request Consultation</h3>
+                            <p class="mt-1 text-sm text-gray-500">
+                                Interested in this project? Fill in your details and we'll get back to you.
+                            </p>
+                        </div>
+                        <div class="space-y-4">
+                            <div>
+                                <label for="consult-name" class="block text-sm font-medium text-gray-700">Name</label>
+                                <input type="text" id="consult-name" name="name" required
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                            </div>
+                            <div>
+                                <label for="consult-email" class="block text-sm font-medium text-gray-700">Email</label>
+                                <input type="email" id="consult-email" name="email" required
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                            </div>
+                            <div>
+                                <label for="consult-phone" class="block text-sm font-medium text-gray-700">Phone</label>
+                                <input type="tel" id="consult-phone" name="phone"
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                            </div>
+                            <div>
+                                <label for="consult-notes" class="block text-sm font-medium text-gray-700">Notes</label>
+                                <textarea id="consult-notes" name="notes" rows="3"
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"></textarea>
+                            </div>
+                            <input type="hidden" id="consult-project-id" name="project_id">
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                        <button type="submit" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm">
+                            Submit Request
+                        </button>
+                        <button type="button" id="cancel-consult-btn" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Container -->
+    <div id="notification-container" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
+    <script src="assets/main.js"></script>
+    <script src="assets/api.js"></script>
+    <script>
+        // Global variables
+        let projects = [];
+        let clients = [];
+        let currentProjectId = null;
+
+        // DOM elements
+        const projectsContainer = document.getElementById('projects-container');
+        const consultModal = document.getElementById('consult-modal');
+        const consultForm = document.getElementById('consult-form');
+        const cancelConsultBtn = document.getElementById('cancel-consult-btn');
+
+        // Event listeners
+        cancelConsultBtn.addEventListener('click', () => closeConsultModal());
+        consultForm.addEventListener('submit', handleConsultSubmit);
+
+        // Functions
+        async function loadShowcaseProjects() {
+            try {
+                projects = await api.getProjects();
+                clients = await api.getClients();
+                
+                // Filter for showcase projects (done and visible)
+                const showcaseProjects = projects.filter(project => 
+                    project.status === 'done' && 
+                    project.showcase_visibility === 'yes'
+                );
+                
+                renderProjects(showcaseProjects);
+            } catch (error) {
+                console.error('Error loading showcase projects:', error);
+                showNotification('Failed to load projects', 'error');
+            }
+        }
+
+        function renderProjects(showcaseProjects) {
+            if (showcaseProjects.length === 0) {
+                projectsContainer.innerHTML = `
+                    <div class="col-span-full text-center py-8 text-gray-500">
+                        <p class="text-lg">No projects available in the showcase yet.</p>
+                        <p class="mt-2">Check back later for our latest work!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            projectsContainer.innerHTML = '';
+            showcaseProjects.forEach(project => {
+                const client = clients.find(c => c.client_id === project.client_id);
+                
+                // Get first screenshot if available
+                let thumbnailUrl = '';
+                if (project.screenshots_json) {
+                    try {
+                        const screenshots = JSON.parse(project.screenshots_json);
+                        if (screenshots && screenshots.length > 0) {
+                            thumbnailUrl = screenshots[0];
+                        }
+                    } catch (e) {
+                        console.error('Error parsing screenshots JSON:', e);
+                    }
+                }
+                
+                // Parse features list
+                let featuresList = [];
+                if (project.project_features) {
+                    featuresList = project.project_features.split('\n').filter(f => f.trim());
+                }
+                
+                const projectCard = document.createElement('div');
+                projectCard.className = 'bg-white/70 backdrop-blur-md rounded-xl shadow-md overflow-hidden border border-white/50 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1';
+                
+                projectCard.innerHTML = `
+                    <div class="h-56 relative overflow-hidden">
+                        ${thumbnailUrl ? 
+                            `<img src="${thumbnailUrl}" alt="${project.project_title}" class="w-full h-full object-cover">` :
+                            `<div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-indigo-100 to-purple-100">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 text-indigo-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                                </svg>
+                            </div>`
+                        }
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">${project.project_title}</h3>
+                        <p class="text-gray-600 mb-4">${project.short_description || 'No description available'}</p>
+                        
+                        ${featuresList.length > 0 ? `
+                            <div class="mb-4">
+                                <h4 class="text-sm font-medium text-gray-700 mb-2">Key Features:</h4>
+                                <ul class="text-sm text-gray-600 space-y-1">
+                                    ${featuresList.slice(0, 3).map(feature => `<li class="flex items-start"><span class="text-indigo-500 mr-2">•</span>${feature}</li>`).join('')}
+                                    ${featuresList.length > 3 ? `<li class="text-indigo-600">+${featuresList.length - 3} more features</li>` : ''}
+                                </ul>
+                            </div>
+                        ` : ''}
+                        
+                        ${project.budget ? `
+                            <div class="mb-4">
+                                <span class="text-sm font-medium text-gray-700">Budget: </span>
+                                <span class="text-sm text-gray-600">${formatCurrency(project.budget)}</span>
+                            </div>
+                        ` : ''}
+                        
+                        <div class="flex space-x-3">
+                            <button onclick="orderSame('${project.project_id}', '${project.project_title}', '${project.budget || ''}')" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
+                                Order Same
+                            </button>
+                            <button onclick="openConsultModal('${project.project_id}')" class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-2 px-4 rounded-lg transition-colors">
+                                Consult
+                            </button>
+                        </div>
+                    </div>
+                `;
+                projectsContainer.appendChild(projectCard);
+            });
+        }
+
+        function openConsultModal(projectId) {
+            currentProjectId = projectId;
+            document.getElementById('consult-project-id').value = projectId;
+            consultModal.classList.remove('hidden');
+        }
+
+        function closeConsultModal() {
+            consultModal.classList.add('hidden');
+            consultForm.reset();
+            currentProjectId = null;
+        }
+
+        async function handleConsultSubmit(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(consultForm);
+            const clientData = {
+                name: formData.get('name'),
+                email: formData.get('email'),
+                phone: formData.get('phone'),
+                notes: formData.get('notes')
+            };
+
+            try {
+                // Check if client already exists
+                let existingClient = clients.find(c => c.email === clientData.email);
+                let clientId;
+                
+                if (existingClient) {
+                    clientId = existingClient.client_id;
+                    console.log('Client already exists:', existingClient);
+                } else {
+                    // Create new client
+                    const newClient = await api.createClient(clientData);
+                    clientId = newClient.client_id;
+                    clients.push(newClient);
+                    console.log('New client created:', newClient);
+                }
+                
+                // Duplicate project as draft
+                const duplicatedProject = await api.duplicateProjectAsDraft(currentProjectId, {
+                    client_id: clientId,
+                    ...clientData
+                });
+                
+                console.log('Project duplicated:', duplicatedProject);
+                
+                showNotification('Thank you for your interest! We will contact you soon.', 'success');
+                closeConsultModal();
+            } catch (error) {
+                console.error('Error processing consultation request:', error);
+                showNotification('Failed to process your request. Please try again.', 'error');
+            }
+        }
+
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(amount);
+        }
+
+        // Global functions for onclick handlers
+        window.orderSame = (projectId, projectTitle, budget) => {
+            const url = `https://lynk.id/?prefill_project=${encodeURIComponent(projectTitle)}&budget=${budget}`;
+            window.open(url, '_blank');
+        };
+        
+        window.openConsultModal = (projectId) => {
+            currentProjectId = projectId;
+            document.getElementById('consult-project-id').value = projectId;
+            consultModal.classList.remove('hidden');
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', loadShowcaseProjects);
+    </script>
+</body>
+</html>
