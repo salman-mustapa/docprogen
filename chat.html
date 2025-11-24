@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Chat - Freelance Project Manager</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body class="font-quicksand bg-gradient-to-br from-indigo-50 via-white to-purple-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white/70 backdrop-blur-md shadow-sm">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <h1 class="text-xl font-bold text-indigo-700">Project Chat</h1>
+                <a href="project-detail.html?project_id=${new URLSearchParams(window.location.search).get('project_id')}" class="text-indigo-600 hover:text-indigo-800 font-medium">
+                    Back to Project
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="px-4 py-8 min-h-screen">
+        <div class="container mx-auto max-w-4xl">
+            <div class="bg-white/70 backdrop-blur-md rounded-xl shadow-md overflow-hidden border border-white/50">
+                <div class="p-6 border-b border-gray-200">
+                    <h2 class="text-lg font-semibold text-gray-800">Project Discussion</h2>
+                    <p class="text-gray-600 mt-1">Communicate with your client about this project</p>
+                </div>
+                
+                <div class="flex flex-col h-96">
+                    <!-- Chat Messages -->
+                    <div id="chat-messages" class="flex-1 p-4 overflow-y-auto bg-gray-50">
+                        <!-- Messages will be loaded here -->
+                    </div>
+                    
+                    <!-- Chat Input -->
+                    <div class="p-4 border-t border-gray-200">
+                        <form id="chat-form" class="flex space-x-2">
+                            <input type="text" id="message-input" placeholder="Type your message..." 
+                                class="flex-1 border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                            <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-md transition-colors">
+                                Send
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- WhatsApp Button -->
+            <div class="mt-4 text-center">
+                <button id="whatsapp-btn" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M17.472 14.382c-.297-.149-.691-.317-.983-.502l-5.672-5.672c-.191-.292-.353-.686-.502-.983-.008-.008-.018-.018-.027-.018-1.256.338-1.997.865-2.165 1.839-.324.527-.832.642-1.653.832-1.003 0-1.921-.527-3.349-.642-4.798-.191-.292-.353-.686-.502-.983-.008-.008-.018-.018-.027-.018-1.256.338-1.997.865-2.165 1.839-.324.527-.832.642-1.653.832-1.003 0-1.921-.527-3.349-.642-4.798z"/>
+                        <path d="M12 2c1.654 0 3 1.346 3 3s3-1.346 3-3-1.346-3-3-3zm0 14.25c-.69 0-1.25-.56-1.25-1.25s-.56-1.25-1.25-1.25h-3.5c-.69 0-1.25.56-1.25 1.25s.56 1.25 1.25 1.25h3.5z"/>
+                    </svg>
+                    Continue on WhatsApp
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Notification Container -->
+    <div id="notification-container" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
+    <script src="assets/main.js"></script>
+    <script src="assets/api.js"></script>
+    <script>
+        // Check authentication
+        if (!checkAuth()) {
+            window.location.href = 'login.html';
+        }
+
+        // Global variables
+        let project = null;
+        let client = null;
+        let settings = null;
+        let messages = [];
+        const projectId = new URLSearchParams(window.location.search).get('project_id');
+
+        // DOM elements
+        const chatMessages = document.getElementById('chat-messages');
+        const chatForm = document.getElementById('chat-form');
+        const messageInput = document.getElementById('message-input');
+        const whatsappBtn = document.getElementById('whatsapp-btn');
+
+        // Event listeners
+        chatForm.addEventListener('submit', handleSendMessage);
+        whatsappBtn.addEventListener('click', openWhatsApp);
+
+        // Functions
+        async function loadProject() {
+            try {
+                if (!projectId) throw new Error("Project ID is required");
+
+                // Load project data
+                project = await api.getProject(projectId);
+                if (!project) throw new Error("Project not found");
+
+                // Load client data
+                if (project.client_id) {
+                    client = await api.getClient(project.client_id);
+                }
+
+                // Load settings
+                settings = await api.getSettings();
+
+                // Load messages
+                await loadMessages();
+            } catch (error) {
+                console.error('Error loading project:', error);
+                showNotification('Failed to load project: ' + error.message, 'error');
+            }
+        }
+
+        async function loadMessages() {
+            try {
+                // In a real implementation, this would load messages from your backend
+                // For now, we'll use a mock implementation
+                messages = [
+                    {
+                        id: 1,
+                        sender: 'client',
+                        message: 'Hi, I\'m interested in this project. Can you provide more details?',
+                        timestamp: new Date(Date.now() - 86400000).toISOString() // 1 day ago
+                    },
+                    {
+                        id: 2,
+                        sender: 'admin',
+                        message: 'Sure! This project includes a full-stack web application with React frontend and Node.js backend. The estimated timeline is 4-6 weeks.',
+                        timestamp: new Date(Date.now() - 43200000).toISOString() // 12 hours ago
+                    }
+                ];
+                
+                renderMessages();
+            } catch (error) {
+                console.error('Error loading messages:', error);
+                showNotification('Failed to load messages', 'error');
+            }
+        }
+
+        function renderMessages() {
+            chatMessages.innerHTML = '';
+            
+            if (messages.length === 0) {
+                chatMessages.innerHTML = `
+                    <div class="text-center text-gray-500 py-8">
+                        <p>No messages yet. Start the conversation!</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            messages.forEach(message => {
+                const messageEl = document.createElement('div');
+                messageEl.className = `flex ${message.sender === 'admin' ? 'justify-end' : 'justify-start'} mb-4`;
+                
+                const bubbleClass = message.sender === 'admin' 
+                    ? 'bg-indigo-600 text-white rounded-lg rounded-br-none' 
+                    : 'bg-gray-200 text-gray-800 rounded-lg rounded-bl-none';
+                
+                const senderName = message.sender === 'admin' 
+                    ? settings?.your_name || 'Admin' 
+                    : client?.name || 'Client';
+                
+                messageEl.innerHTML = `
+                    <div class="max-w-xs lg:max-w-md">
+                        <div class="text-xs text-gray-500 mb-1">${senderName} • ${formatTime(message.timestamp)}</div>
+                        <div class="${bubbleClass} px-4 py-2 shadow">
+                            ${message.message}
+                        </div>
+                    </div>
+                `;
+                
+                chatMessages.appendChild(messageEl);
+            });
+            
+            // Scroll to bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        async function handleSendMessage(e) {
+            e.preventDefault();
+            
+            const message = messageInput.value.trim();
+            if (!message) return;
+            
+            try {
+                // Add message to local array
+                const newMessage = {
+                    id: messages.length + 1,
+                    sender: 'admin',
+                    message: message,
+                    timestamp: new Date().toISOString()
+                };
+                
+                messages.push(newMessage);
+                
+                // In a real implementation, this would save the message to your backend
+                // For now, we'll just update the UI
+                renderMessages();
+                
+                // Clear input
+                messageInput.value = '';
+                
+                // Simulate auto-refresh every 1-5 minutes
+                setTimeout(loadMessages, 60000); // 1 minute
+            } catch (error) {
+                console.error('Error sending message:', error);
+                showNotification('Failed to send message', 'error');
+            }
+        }
+
+        function openWhatsApp() {
+            if (!client || !client.phone) {
+                showNotification('Client phone number not available', 'error');
+                return;
+            }
+            
+            const phoneNumber = client.phone.replace(/\D/g, ''); // Remove non-digits
+            const message = encodeURIComponent(`Hi, I'm contacting you about the project: ${project?.project_title || 'Your Project'}`);
+            
+            window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
+        }
+
+        function formatTime(timestamp) {
+            const date = new Date(timestamp);
+            return date.toLocaleTimeString('en-US', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        // Initialize
+        if (projectId) {
+            document.addEventListener('DOMContentLoaded', loadProject);
+            
+            // Auto-refresh every 1-5 minutes
+            setInterval(loadMessages, 180000); // 3 minutes
+        } else {
+            showNotification("Project ID not provided", "error");
+            window.location.href = 'projects.html';
+        }
+    </script>
+</body>
+</html>

@@ -363,6 +363,7 @@
             });
         }
 
+
         function handleSearch() {
             const searchTerm = searchInput.value.toLowerCase();
             filteredClients = clients.filter(client => 
@@ -375,6 +376,83 @@
         }
 
         function openClientModal(clientId = null) {
+            // Buat elemen modal jika belum ada
+            let clientModal = document.getElementById('client-modal');
+            
+            if (!clientModal) {
+                clientModal = document.createElement('div');
+                clientModal.id = 'client-modal';
+                clientModal.className = 'fixed inset-0 z-50 overflow-y-auto';
+                clientModal.innerHTML = `
+                    <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                        <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                            <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+                        </div>
+                        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h3 id="modal-title" class="text-lg leading-6 font-medium text-gray-900">Add New Client</h3>
+                                    <button id="close-client-modal" class="text-gray-400 hover:text-gray-500 focus:outline-none">
+                                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </button>
+                                </div>
+                                <form id="client-form" class="space-y-4">
+                                    <div>
+                                        <label for="client-name" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                                        <input type="text" id="client-name" name="name" required
+                                            class="w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                                    </div>
+                                    <div>
+                                        <label for="client-company" class="block text-sm font-medium text-gray-700 mb-1">Company</label>
+                                        <input type="text" id="client-company" name="company"
+                                            class="w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                                    </div>
+                                    <div>
+                                        <label for="client-email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                                        <input type="email" id="client-email" name="email" required
+                                            class="w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                                    </div>
+                                    <div>
+                                        <label for="client-phone" class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                                        <input type="tel" id="client-phone" name="phone"
+                                            class="w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                                    </div>
+                                    <div>
+                                        <label for="client-notes" class="block text-sm font-medium text-gray-700 mb-1">Notes</label>
+                                        <textarea id="client-notes" name="notes" rows="3"
+                                            class="w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input type="checkbox" id="create-project" name="create_project" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                                        <label for="create-project" class="ml-2 block text-sm text-gray-900">
+                                            Create project for this client
+                                        </label>
+                                    </div>
+                                    <input type="hidden" id="client-id" name="client_id">
+                                </form>
+                                <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+                                    <button type="button" id="cancel-client-btn" class="w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm">
+                                        Cancel
+                                    </button>
+                                    <button type="button" id="save-client-btn" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:w-auto sm:text-sm">
+                                        Save
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                document.body.appendChild(clientModal);
+                
+                // Event listeners untuk modal
+                document.getElementById('close-client-modal').addEventListener('click', closeClientModal);
+                document.getElementById('cancel-client-btn').addEventListener('click', closeClientModal);
+                document.getElementById('save-client-btn').addEventListener('click', handleClientSubmit);
+            }
+            
             const client = clientId ? clients.find(c => c.client_id === clientId) : null;
             
             if (client) {
@@ -388,7 +466,7 @@
                 currentEditId = client.client_id;
             } else {
                 modalTitle.textContent = 'Add New Client';
-                clientForm.reset();
+                document.getElementById('client-form').reset();
                 document.getElementById('client-id').value = '';
                 currentEditId = null;
             }
@@ -396,6 +474,7 @@
             clientModal.classList.remove('hidden');
         }
 
+        
         function closeClientModal() {
             clientModal.classList.add('hidden');
             clientForm.reset();

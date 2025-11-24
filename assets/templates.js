@@ -486,6 +486,88 @@ const documentTemplates = {
         return renderTemplate(template, data);
     },
 
+    // templates.js - Tambahkan template CV Summary
+    cv_summary: (data) => {
+        const { client, project, settings } = data || {};
+        const currency = settings?.default_currency || 'IDR';
+        
+        return `
+        <div class="w-full max-w-[210mm] mx-auto bg-white text-gray-800 font-quicksand text-sm leading-relaxed" style="padding: 2.5cm; font-family: 'Quicksand', sans-serif;">
+            <div class="text-center mb-12 pt-10">
+                <h1 class="text-3xl font-bold text-gray-900 mb-2">Curriculum Vitae</h1>
+                <p class="text-gray-600">${settings?.your_name || 'Your Name'}</p>
+            </div>
+
+            <div class="mb-8">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4 border-b border-gray-200 pb-2">Personal Information</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <p class="text-sm text-gray-500">Name</p>
+                        <p class="font-medium text-gray-800">${settings?.your_name || ''}</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Title</p>
+                        <p class="font-medium text-gray-800">${settings?.your_title || ''}</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Email</p>
+                        <p class="font-medium text-gray-800">${settings?.your_email || ''}</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Phone</p>
+                        <p class="font-medium text-gray-800">${settings?.your_phone || ''}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-8">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4 border-b border-gray-200 pb-2">Professional Summary</h2>
+                <p class="text-gray-600 text-justify leading-loose">
+                    Experienced ${settings?.your_title || 'developer'} with a proven track record of delivering high-quality projects on time and within budget. 
+                    Specialized in creating custom solutions that meet client needs and exceed expectations.
+                </p>
+            </div>
+
+            <div class="mb-8">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4 border-b border-gray-200 pb-2">Recent Projects</h2>
+                <div class="space-y-4">
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h3 class="font-medium text-gray-800 mb-2">${project?.project_title || 'Recent Project'}</h3>
+                        <p class="text-gray-600 mb-2">${project?.short_description || 'Project description'}</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
+                            <div>
+                                <p class="text-gray-500">Client</p>
+                                <p class="font-medium">${client?.name || 'Client Name'}</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-500">Budget</p>
+                                <p class="font-medium">${formatMoney(project?.budget, currency)}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-8">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4 border-b border-gray-200 pb-2">Skills</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
+                    <div class="bg-gray-50 p-3 rounded">Frontend Development</div>
+                    <div class="bg-gray-50 p-3 rounded">Backend Development</div>
+                    <div class="bg-gray-50 p-3 rounded">Database Management</div>
+                    <div class="bg-gray-50 p-3 rounded">UI/UX Design</div>
+                    <div class="bg-gray-50 p-3 rounded">Project Management</div>
+                    <div class="bg-gray-50 p-3 rounded">Client Communication</div>
+                    <div class="bg-gray-50 p-3 rounded">Problem Solving</div>
+                </div>
+            </div>
+
+            <div class="mt-12 pt-8 border-t border-gray-200 text-center">
+                <p class="text-xs text-gray-400">Generated on ${new Date().toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+            </div>
+        </div>
+        `;
+    },
+
     // UAT Template
     uat: (data) => {
         const template = `

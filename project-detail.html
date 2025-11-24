@@ -544,44 +544,6 @@
                     </svg>
                   </div>
                 </button>
-                <button
-                  class="document-btn w-full text-left bg-gray-50 hover:bg-gray-100 p-3 rounded-lg transition-colors"
-                  data-doc="cv-summary"
-                >
-                  <div class="flex items-center justify-between">
-                    <div class="flex items-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="h-5 w-5 text-indigo-600 mr-3"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                        />
-                      </svg>
-                      <span class="font-medium">CV Summary</span>
-                    </div>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="h-5 w-5 text-gray-400"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                      />
-                    </svg>
-                  </div>
-                </button>
               </div>
             </div>
 
@@ -763,10 +725,266 @@
       const copyShareLinkBtn = document.getElementById("copy-share-link");
       const copyPublicLinkBtn = document.getElementById("copy-public-link");
 
-      // Event listeners
-      editProjectBtn.addEventListener("click", () => {
-        window.location.href = `projects.html?edit=${projectId}`;
+      
+      const chatButton = document.createElement('button');
+      chatButton.className = 'bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center';
+      chatButton.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h10l4 4V4c0-1.1-.9-2-2-2zm-2 12H8v-2h8v2zm-2 4H6v-2h8v2zm-2 4H4v-2h8v2z"/>
+          </svg>
+          Start Chat
+      `;
+      chatButton.addEventListener('click', () => {
+          window.location.href = `chat.html?project_id=${projectId}`;
       });
+
+      // Tambahkan tombol ke document buttons
+      const documentButtons = document.getElementById('document-buttons');
+      if (documentButtons) {
+          documentButtons.appendChild(chatButton);
+      }
+
+      // Event listeners
+
+      editProjectBtn.addEventListener("click", () => {
+        // Buka modal edit langsung tanpa redirect
+        openEditProjectModal();
+      });
+
+      // Tambahkan fungsi modal edit project
+      function openEditProjectModal() {
+        // Buat elemen modal jika belum ada
+        let editModal = document.getElementById("edit-project-modal");
+
+        if (!editModal) {
+          editModal = document.createElement("div");
+          editModal.id = "edit-project-modal";
+          editModal.className = "fixed inset-0 z-50 overflow-y-auto";
+          editModal.innerHTML = `
+                  <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                      <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                          <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+                      </div>
+                      <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full">
+                          <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                              <div class="flex justify-between items-center mb-4">
+                                  <h3 class="text-lg leading-6 font-medium text-gray-900">Edit Project</h3>
+                                  <button id="close-edit-modal" class="text-gray-400 hover:text-gray-500 focus:outline-none">
+                                      <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                      </svg>
+                                  </button>
+                              </div>
+                              <form id="edit-project-form" class="space-y-6">
+                                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                      <div>
+                                          <label for="edit-project-title" class="block text-sm font-medium text-gray-700 mb-1">Project Title</label>
+                                          <input type="text" id="edit-project-title" name="project_title" required
+                                              class="w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                                      </div>
+                                      <div>
+                                          <label for="edit-client-id" class="block text-sm font-medium text-gray-700 mb-1">Client</label>
+                                          <select id="edit-client-id" name="client_id" required
+                                              class="w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                                              <option value="">Select a client</option>
+                                          </select>
+                                      </div>
+                                  </div>
+                                  <div>
+                                      <label for="edit-short-description" class="block text-sm font-medium text-gray-700 mb-1">Short Description</label>
+                                      <textarea id="edit-short-description" name="short_description" rows="2"
+                                          class="w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                                  </div>
+                                  <div>
+                                      <label for="edit-long-description" class="block text-sm font-medium text-gray-700 mb-1">Long Description</label>
+                                      <textarea id="edit-long-description" name="long_description" rows="4"
+                                          class="w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                                  </div>
+                                  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                      <div>
+                                          <label for="edit-status" class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                                          <select id="edit-status" name="status" required
+                                              class="w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                                              <option value="planning">Planning</option>
+                                              <option value="draft">Draft</option>
+                                              <option value="in-progress">In Progress</option>
+                                              <option value="done">Done</option>
+                                              <option value="cancelled">Cancelled</option>
+                                          </select>
+                                      </div>
+                                      <div>
+                                          <label for="edit-start-date" class="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+                                          <input type="date" id="edit-start-date" name="start_date"
+                                              class="w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                                      </div>
+                                      <div>
+                                          <label for="edit-end-date" class="block text-sm font-medium text-gray-700 mb-1">End Date</label>
+                                          <input type="date" id="edit-end-date" name="end_date"
+                                              class="w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                                      </div>
+                                  </div>
+                                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                      <div>
+                                          <label for="edit-budget" class="block text-sm font-medium text-gray-700 mb-1">Budget</label>
+                                          <input type="number" id="edit-budget" name="budget" min="0" step="0.01"
+                                              class="w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                                      </div>
+                                      <div>
+                                          <label for="edit-payment-terms" class="block text-sm font-medium text-gray-700 mb-1">Payment Terms</label>
+                                          <input type="text" id="edit-payment-terms" name="payment_terms"
+                                              class="w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                                      </div>
+                                  </div>
+                                  <div>
+                                      <label for="edit-deliverables" class="block text-sm font-medium text-gray-700 mb-1">Deliverables</label>
+                                      <textarea id="edit-deliverables" name="deliverables" rows="2"
+                                          class="w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                                  </div>
+                                  <div>
+                                      <label for="edit-project-features" class="block text-sm font-medium text-gray-700 mb-1">Project Features</label>
+                                      <textarea id="edit-project-features" name="project_features" rows="2"
+                                          class="w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                                  </div>
+                                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                      <div>
+                                          <label for="edit-youtube-link" class="block text-sm font-medium text-gray-700 mb-1">YouTube Link</label>
+                                          <input type="url" id="edit-youtube-link" name="youtube_link"
+                                              class="w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                                      </div>
+                                      <div>
+                                          <label for="edit-showcase-visibility" class="block text-sm font-medium text-gray-700 mb-1">Showcase Visibility</label>
+                                          <select id="edit-showcase-visibility" name="showcase_visibility"
+                                              class="w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                                              <option value="no">No</option>
+                                              <option value="yes">Yes</option>
+                                          </select>
+                                      </div>
+                                  </div>
+                                  <input type="hidden" id="edit-project-id" name="project_id">
+                              </form>
+                              <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+                                  <button type="button" id="cancel-edit-btn" class="w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm">
+                                      Cancel
+                                  </button>
+                                  <button type="button" id="save-edit-btn" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:w-auto sm:text-sm">
+                                      Save Changes
+                                  </button>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              `;
+
+          document.body.appendChild(editModal);
+
+          // Event listeners untuk modal
+          document
+            .getElementById("close-edit-modal")
+            .addEventListener("click", closeEditModal);
+          document
+            .getElementById("cancel-edit-btn")
+            .addEventListener("click", closeEditModal);
+          document
+            .getElementById("save-edit-btn")
+            .addEventListener("click", saveProjectChanges);
+        }
+
+        // Isi form dengan data project
+        document.getElementById("edit-project-title").value =
+          project.project_title;
+        document.getElementById("edit-client-id").value = project.client_id;
+        document.getElementById("edit-short-description").value =
+          project.short_description || "";
+        document.getElementById("edit-long-description").value =
+          project.long_description || "";
+        document.getElementById("edit-status").value = project.status;
+        document.getElementById("edit-start-date").value =
+          project.start_date || "";
+        document.getElementById("edit-end-date").value = project.end_date || "";
+        document.getElementById("edit-budget").value = project.budget || "";
+        document.getElementById("edit-payment-terms").value =
+          project.payment_terms || "";
+        document.getElementById("edit-deliverables").value =
+          project.deliverables || "";
+        document.getElementById("edit-project-features").value =
+          project.project_features || "";
+        document.getElementById("edit-youtube-link").value =
+          project.youtube_link || "";
+        document.getElementById("edit-showcase-visibility").value =
+          project.showcase_visibility || "no";
+        document.getElementById("edit-project-id").value = project.project_id;
+
+        // Populate client dropdown
+        populateClientDropdown();
+
+        // Tampilkan modal
+        editModal.classList.remove("hidden");
+      }
+
+      function closeEditModal() {
+        const editModal = document.getElementById("edit-project-modal");
+        if (editModal) {
+          editModal.classList.add("hidden");
+        }
+      }
+
+      async function saveProjectChanges() {
+        const form = document.getElementById("edit-project-form");
+        const formData = new FormData(form);
+
+        const projectData = {
+          client_id: formData.get("client_id"),
+          project_title: formData.get("project_title"),
+          short_description: formData.get("short_description"),
+          long_description: formData.get("long_description"),
+          status: formData.get("status"),
+          start_date: formData.get("start_date"),
+          end_date: formData.get("end_date"),
+          budget: formData.get("budget"),
+          payment_terms: formData.get("payment_terms"),
+          deliverables: formData.get("deliverables"),
+          project_features: formData.get("project_features"),
+          youtube_link: formData.get("youtube_link"),
+          showcase_visibility: formData.get("showcase_visibility"),
+        };
+
+        try {
+          await api.updateProject(project.project_id, projectData);
+          showNotification("Project updated successfully", "success");
+          closeEditModal();
+          // Refresh data di halaman detail
+          await loadProject();
+        } catch (error) {
+          console.error("Error updating project:", error);
+          showNotification("Failed to update project", "error");
+        }
+      }
+
+      async function populateClientDropdown() {
+        try {
+          const clients = await api.getClients();
+          const clientSelect = document.getElementById("edit-client-id");
+
+          // Clear existing options except first one
+          while (clientSelect.options.length > 1) {
+            clientSelect.remove(1);
+          }
+
+          // Add client options
+          clients.forEach((client) => {
+            const option = document.createElement("option");
+            option.value = client.client_id;
+            option.textContent = client.name;
+            clientSelect.appendChild(option);
+          });
+
+          // Set selected client
+          clientSelect.value = project.client_id;
+        } catch (error) {
+          console.error("Error loading clients:", error);
+          showNotification("Failed to load clients", "error");
+        }
+      }
 
       documentBtns.forEach((btn) => {
         btn.addEventListener("click", () => {
@@ -790,52 +1008,54 @@
       // Functions
       // Update bagian loadProject di project-detail.html
       async function loadProject() {
-          try {
-              if (!projectId) throw new Error("Project ID is required");
+        try {
+          if (!projectId) throw new Error("Project ID is required");
 
-              // API might return either { ok: true, project: {...} } or project object directly
-              const res = await api.getProject(projectId);
-              project = res && res.project ? res.project : res;
+          // API might return either { ok: true, project: {...} } or project object directly
+          const res = await api.getProject(projectId);
+          project = res && res.project ? res.project : res;
 
-              if (!project || !project.project_id)
-                  throw new Error("Project not found");
+          if (!project || !project.project_id)
+            throw new Error("Project not found");
 
-              // client may be returned similarly
-              let clientRes = project.client_id
-                  ? await api.getClient(project.client_id)
-                  : null;
-              client = clientRes && clientRes.client ? clientRes.client : clientRes;
+          // client may be returned similarly
+          let clientRes = project.client_id
+            ? await api.getClient(project.client_id)
+            : null;
+          client = clientRes && clientRes.client ? clientRes.client : clientRes;
 
-              // settings
-              const settingsRes = await api.getSettings();
-              settings =
-                  settingsRes && settingsRes.settings
-                      ? settingsRes.settings
-                      : settingsRes;
+          // settings
+          const settingsRes = await api.getSettings();
+          settings =
+            settingsRes && settingsRes.settings
+              ? settingsRes.settings
+              : settingsRes;
 
-              // ensure fields normalized
-              project.project_features = project.project_features || "";
-              project.deliverables = project.deliverables || "";
+          // ensure fields normalized
+          project.project_features = project.project_features || "";
+          project.deliverables = project.deliverables || "";
 
-              renderProject();
-          } catch (error) {
-              console.error('Error loading project:', error);
-              handleApiError(error, 'Failed to load project');
-              
-              // Show error state
-              document.getElementById('project-container').innerHTML = `
+          renderProject();
+        } catch (error) {
+          console.error("Error loading project:", error);
+          handleApiError(error, "Failed to load project");
+
+          // Show error state
+          document.getElementById("project-container").innerHTML = `
                   <div class="bg-white/70 backdrop-blur-md rounded-xl shadow-md p-8 border border-white/50 text-center">
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto mb-4 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                       <h2 class="text-xl font-semibold text-gray-800 mb-2">Error Loading Project</h2>
-                      <p class="text-gray-600 mb-4">${error.message || 'An unknown error occurred'}</p>
+                      <p class="text-gray-600 mb-4">${
+                        error.message || "An unknown error occurred"
+                      }</p>
                       <a href="projects.html" class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
                           Back to Projects
                       </a>
                   </div>
               `;
-          }
+        }
       }
 
       function renderProject() {
@@ -1039,15 +1259,15 @@
           const opt = {
             margin: 0, // PENTING: Ubah jadi 0 karena template sudah punya padding sendiri
             filename: filename,
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { 
-                scale: 2, 
-                useCORS: true,
-                scrollY: 0,
-                windowWidth: document.documentElement.offsetWidth,
+            image: { type: "jpeg", quality: 0.98 },
+            html2canvas: {
+              scale: 2,
+              useCORS: true,
+              scrollY: 0,
+              windowWidth: document.documentElement.offsetWidth,
             },
-            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-        };
+            jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+          };
 
           // 4. Beri jeda agar Tailwind render style, lalu convert
           setTimeout(() => {
@@ -1079,6 +1299,7 @@
         }
       }
 
+      
       function getDocumentTemplate(docType) {
         // This will be defined in templates.js
         if (

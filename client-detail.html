@@ -218,12 +218,213 @@
 
         // Event listeners
         editClientBtn.addEventListener('click', () => {
-            window.location.href = `clients.html?edit=${clientId}`;
+            // Buka modal edit langsung di halaman ini
+            openEditClientModal();
         });
 
+        function openEditClientModal() {
+            // Buka modal edit yang sama dengan di halaman clients
+            const clientModal = document.getElementById('client-modal');
+            const modalTitle = document.getElementById('modal-title');
+            
+            // Isi form dengan data client yang ada
+            modalTitle.textContent = 'Edit Client';
+            document.getElementById('client-name').value = client.name;
+            document.getElementById('client-company').value = client.company || '';
+            document.getElementById('client-email').value = client.email;
+            document.getElementById('client-phone').value = client.phone || '';
+            document.getElementById('client-notes').value = client.notes || '';
+            document.getElementById('client-id').value = client.client_id;
+            
+            // Tampilkan modal
+            clientModal.classList.remove('hidden');
+            
+            // Simpan ID client yang sedang diedit
+            currentEditId = client.client_id;
+        }
+
+
         addProjectBtn.addEventListener('click', () => {
-            window.location.href = `projects.html?client=${clientId}`;
+            openAddProjectModal();
         });
+
+        function openAddProjectModal() {
+            // Buat elemen modal jika belum ada
+            let addModal = document.getElementById('add-project-modal');
+            
+            if (!addModal) {
+                addModal = document.createElement('div');
+                addModal.id = 'add-project-modal';
+                addModal.className = 'fixed inset-0 z-50 overflow-y-auto';
+                addModal.innerHTML = `
+                    <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                        <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                            <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+                        </div>
+                        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full">
+                            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h3 class="text-lg leading-6 font-medium text-gray-900">Add New Project</h3>
+                                    <button id="close-add-modal" class="text-gray-400 hover:text-gray-500 focus:outline-none">
+                                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </button>
+                                </div>
+                                <form id="add-project-form" class="space-y-6">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label for="add-project-title" class="block text-sm font-medium text-gray-700 mb-1">Project Title</label>
+                                            <input type="text" id="add-project-title" name="project_title" required
+                                                class="w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                                        </div>
+                                        <div>
+                                            <label for="add-client-id" class="block text-sm font-medium text-gray-700 mb-1">Client</label>
+                                            <select id="add-client-id" name="client_id" required
+                                                class="w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                                                <option value="">Select a client</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label for="add-short-description" class="block text-sm font-medium text-gray-700 mb-1">Short Description</label>
+                                        <textarea id="add-short-description" name="short_description" rows="2"
+                                            class="w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                                    </div>
+                                    <div>
+                                        <label for="add-long-description" class="block text-sm font-medium text-gray-700 mb-1">Long Description</label>
+                                        <textarea id="add-long-description" name="long_description" rows="4"
+                                            class="w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                                    </div>
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        <div>
+                                            <label for="add-status" class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                                            <select id="add-status" name="status" required
+                                                class="w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                                                <option value="planning">Planning</option>
+                                                <option value="draft">Draft</option>
+                                                <option value="in-progress">In Progress</option>
+                                                <option value="done">Done</option>
+                                                <option value="cancelled">Cancelled</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label for="add-start-date" class="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+                                            <input type="date" id="add-start-date" name="start_date"
+                                                class="w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                                        </div>
+                                        <div>
+                                            <label for="add-end-date" class="block text-sm font-medium text-gray-700 mb-1">End Date</label>
+                                            <input type="date" id="add-end-date" name="end_date"
+                                                class="w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label for="add-budget" class="block text-sm font-medium text-gray-700 mb-1">Budget</label>
+                                            <input type="number" id="add-budget" name="budget" min="0" step="0.01"
+                                                class="w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                                        </div>
+                                        <div>
+                                            <label for="add-payment-terms" class="block text-sm font-medium text-gray-700 mb-1">Payment Terms</label>
+                                            <input type="text" id="add-payment-terms" name="payment_terms"
+                                                class="w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                                        </div>
+                                    </div>
+                                    <input type="hidden" id="add-client-id-hidden" name="client_id">
+                                </form>
+                                <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+                                    <button type="button" id="cancel-add-btn" class="w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm">
+                                        Cancel
+                                    </button>
+                                    <button type="button" id="save-add-btn" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:w-auto sm:text-sm">
+                                        Create Project
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                document.body.appendChild(addModal);
+                
+                // Event listeners untuk modal
+                document.getElementById('close-add-modal').addEventListener('click', closeAddModal);
+                document.getElementById('cancel-add-btn').addEventListener('click', closeAddModal);
+                document.getElementById('save-add-btn').addEventListener('click', saveNewProject);
+            }
+            
+            // Isi form dengan client ID
+            document.getElementById('add-client-id-hidden').value = clientId;
+            
+            // Populate client dropdown
+            populateClientDropdown();
+            
+            // Tampilkan modal
+            addModal.classList.remove('hidden');
+        }
+
+        function closeAddModal() {
+            const addModal = document.getElementById('add-project-modal');
+            if (addModal) {
+                addModal.classList.add('hidden');
+            }
+        }
+
+        async function saveNewProject() {
+            const form = document.getElementById('add-project-form');
+            const formData = new FormData(form);
+            
+            const projectData = {
+                client_id: formData.get('client_id'),
+                project_title: formData.get('project_title'),
+                short_description: formData.get('short_description'),
+                long_description: formData.get('long_description'),
+                status: formData.get('status'),
+                start_date: formData.get('start_date'),
+                end_date: formData.get('end_date'),
+                budget: formData.get('budget'),
+                payment_terms: formData.get('payment_terms')
+            };
+            
+            try {
+                const newProject = await api.createProject(projectData);
+                showNotification('Project created successfully', 'success');
+                closeAddModal();
+                
+                // Refresh data di halaman detail
+                await loadClientDetail();
+            } catch (error) {
+                console.error('Error creating project:', error);
+                showNotification('Failed to create project', 'error');
+            }
+        }
+
+        async function populateClientDropdown() {
+            try {
+                const clients = await api.getClients();
+                const clientSelect = document.getElementById('add-client-id');
+                
+                // Clear existing options except first one
+                while (clientSelect.options.length > 1) {
+                    clientSelect.remove(1);
+                }
+                
+                // Add client options
+                clients.forEach(client => {
+                    const option = document.createElement('option');
+                    option.value = client.client_id;
+                    option.textContent = client.name;
+                    clientSelect.appendChild(option);
+                });
+                
+                // Set selected client
+                clientSelect.value = clientId;
+            } catch (error) {
+                console.error('Error loading clients:', error);
+                showNotification('Failed to load clients', 'error');
+            }
+        }
 
         // Functions
         async function loadClientDetail() {
